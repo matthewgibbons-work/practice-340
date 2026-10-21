@@ -1,0 +1,30 @@
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+#party {
+  list-style: none;
+  padding: 0;
+}
+
+#party li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #8888;
+}
+
+#party .name {
+  flex: 1 1 10rem;
+}
+
+button {
+  font: inherit;
+  padding: 0.25rem 0.75rem;
+}
