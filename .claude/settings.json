@@ -10,5 +10,18 @@
       "Bash(git reset:*)",
       "Bash(git checkout:*)"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}\"/.claude/hooks/scope-guard.mjs"
+          }
+        ]
+      }
+    ]
   }
 }
