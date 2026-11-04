@@ -1,0 +1,55 @@
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+input,
+button {
+  font: inherit;
+  padding: 0.25rem 0.5rem;
+}
+
+#status {
+  min-height: 1.5em;
+  font-weight: bold;
+}
+
+/* Cards wrap onto new rows as the screen narrows or zooms. */
+#party {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 1rem;
+}
+
+#party li {
+  border: 1px solid #8888;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+#party h3 {
+  margin: 0;
+}
+
+#party img {
+  width: 6rem;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+#party .types {
+  margin: 0;
+}

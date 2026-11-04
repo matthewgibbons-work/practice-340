@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>P1 · Async party</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Tournament party planner</h1>
+    <p>Up to six Pokémon, loaded live from PokéAPI.</p>
+  </header>
+
+  <main>
+    <form id="add-form">
+      <label for="pokemon-name">Pokémon name</label>
+      <input id="pokemon-name" name="pokemon-name" type="text" autocomplete="off" required>
+      <button type="submit">Add to party</button>
+    </form>
+
+    <!-- On the page from the start, so screen readers announce every change to it. -->
+    <p id="status" aria-live="polite"></p>
+
+    <h2 id="party-heading">My party</h2>
+    <ul id="party" aria-labelledby="party-heading"></ul>
+  </main>
+
+  <footer>
+    <p><a href="../../">Back to the hub</a></p>
+  </footer>
+</body>
+</html>
