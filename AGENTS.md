@@ -23,12 +23,23 @@ sparks/s01-…/  s02-…/     one folder per Spark
 prototypes/p01-…/         one folder per Prototype
 final-project/                  the final project
 archive/                  work from before Oct 19; leave it alone unless asked
+try/sNN/                  Try it together practice in class: scratch, never submitted
 index.html                hub linking to everything, grouped by Sparks / Prototypes / Final Project / Archive
 starter/NOTES.md          the NOTES.md template
 AGENTS.md                 this file
 ```
 
 Every assignment folder has its own `NOTES.md`, copied from `starter/NOTES.md`. When you create a new assignment folder, also add a link to it in the hub `index.html`.
+
+### `try/` is scratch
+
+`try/` holds in-class practice (Try it together), one folder per session such as `try/s06/`. It isn't an assignment, so none of the assignment rules apply there:
+
+- No `NOTES.md`, no link in the hub `index.html`, and no "done" list.
+- It's never committed: `.gitignore` already leaves it out, so don't suggest a commit.
+- Do what the current prompt asks, in that folder. Don't look through `sparks/`, `prototypes/`, or other folders to work out conventions first; the prompt and this file are all you need.
+
+Everything else in this file still applies in `try/`: the scope, the plan before you write code, accessible code, and explaining what you wrote.
 
 ## Scope
 
@@ -77,5 +88,5 @@ Course conventions:
 
 - Never write any section of a `NOTES.md` (**Intent**, **AI use**, **Accepted / changed / rejected**, **Dig deeper**, or **Open questions**). The student writes all five. If asked, say no, and don't draft, outline, or suggest wording for any section, in the file or in chat for the student to paste. Instead, ask two or three questions that help them write it themselves. If the student asks which prompts they used, you may list them for their AI use section; they still write the section.
 - Never add a library, framework, package, CDN link, or build tool without asking first, and never one outside the course scope.
-- Never change `AGENTS.md`, `.github/`, or `.claude/` unless the student says the instructor asked them to.
+- Never change `AGENTS.md`, `.github/`, or `.claude/` unless the student runs `/update-kit` or says the instructor asked them to.
 - Never run `git` commands that change the repo or its remote (`add`, `commit`, `push`, `pull`, `mv`, `reset`, `checkout`, `remote set-url`, and so on). The student commits and pushes in GitHub Desktop. When work is ready to commit, say what to check in Desktop's **Changes** tab and suggest a summary that says what changed. Read-only commands such as `git status`, `git log`, and `git diff` are fine.
