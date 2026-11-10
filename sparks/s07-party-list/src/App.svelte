@@ -57,47 +57,165 @@
 </script>
 
 <main>
-  <h1 bind:this={heading} tabindex="-1">My party</h1>
+  <div class="banner">
+    <p class="kicker">Trainer party</p>
+    <h1 bind:this={heading} tabindex="-1">My party</h1>
+  </div>
 
   {#await request}
-    <p role="status">Loading your party…</p>
+    <p role="status" class="status">Loading your party…</p>
   {:then}
-    <ul bind:this={list}>
+    <ul bind:this={list} class="party">
       {#each party as pokemon (pokemon.id)}
-        <li>
+        <li class="member">
           <img src={pokemon.sprite} alt={pokemon.name} width="96" height="96" />
           <span class="name">{pokemon.name}</span>
           <button type="button" onclick={() => remove(pokemon)}>Remove {pokemon.name}</button>
         </li>
       {:else}
-        <li>Your party is empty.</li>
+        <li class="empty">Your party is empty.</li>
       {/each}
     </ul>
   {:catch error}
-    <p role="alert">{error.message}</p>
+    <p role="alert" class="error">{error.message}</p>
   {/await}
 
-  <p><a href="../../">Back to the hub</a></p>
+  <p class="back"><a href="../../">Back to the hub</a></p>
 </main>
 
 <style>
-  main {
+  /* A warm trainer-card palette. Tokens on :root so the page behind
+     the component matches too. */
+  :global(:root) {
+    --bg: #fff8ee;
+    --surface: #ffffff;
+    --text: #2b1d16;
+    --muted: #6b4f3f;
+    --accent: #b3261e;
+    --accent-soft: #ffe1d6;
+    --border: #e7c9b5;
+  }
+
+  :global(body) {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
     font-family: system-ui, sans-serif;
     line-height: 1.5;
-    max-width: 40rem;
+  }
+
+  main {
+    max-width: 52rem;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 1.5rem 1rem 2rem;
   }
-  ul {
+
+  /* The red band at the top, with rounded corners like a card. */
+  .banner {
+    padding: 1.25rem 1.5rem;
+    background: var(--accent);
+    color: #ffffff;
+    border-radius: 1rem;
+  }
+
+  .kicker {
+    margin: 0;
+    color: var(--accent-soft);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 2.25rem;
+    line-height: 1.2;
+  }
+
+  h1:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 4px;
+    border-radius: 0.25rem;
+  }
+
+  /* The party: as many cards per row as fit, one per row at 200% zoom. */
+  .party {
     list-style: none;
+    margin: 1.5rem 0;
     padding: 0;
-  }
-  li {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
     gap: 1rem;
   }
+
+  .member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    text-align: center;
+  }
+
+  /* A soft circle behind each sprite. */
+  img {
+    background: var(--accent-soft);
+    border-radius: 50%;
+  }
+
   .name {
-    flex-grow: 1;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  button {
+    margin-top: auto;
+    min-height: 2.5rem;
+    padding: 0.375rem 0.875rem;
+    background: var(--surface);
+    color: var(--accent);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border: 2px solid var(--accent);
+    border-radius: 2rem;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: var(--accent);
+    color: #ffffff;
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 2px;
+  }
+
+  .empty,
+  .status {
+    color: var(--muted);
+  }
+
+  .error {
+    padding: 0.75rem 1rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 700;
+    border-radius: 0.5rem;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  .back a {
+    display: inline-block;
+    padding-block: 0.25rem;
   }
 </style>
