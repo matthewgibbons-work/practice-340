@@ -93,96 +93,328 @@
   }
 </script>
 
-<main>
+<header class="banner">
   <h1>Party builder</h1>
+  <p>Look up Pokémon by name and build a party of up to {MAX_PARTY_SIZE}.</p>
+</header>
 
-  <form onsubmit={lookUp}>
-    <label for="name">Pokémon name</label>
-    <input id="name" bind:value={nameInput} autocomplete="off" aria-describedby="status" />
-    <button type="submit" disabled={status === 'loading'}>
-      {status === 'loading' ? 'Looking up…' : 'Add to party'}
-    </button>
-  </form>
+<main>
+  <div class="layout">
+    <section class="panel add" aria-labelledby="add-heading">
+      <h2 id="add-heading">Add a Pokémon</h2>
+      <form onsubmit={lookUp}>
+        <label for="name">Pokémon name</label>
+        <input id="name" bind:value={nameInput} autocomplete="off" aria-describedby="status" />
+        <button type="submit" disabled={status === 'loading'}>
+          {status === 'loading' ? 'Looking up…' : 'Add to party'}
+        </button>
+      </form>
 
-  <!-- On the page from the start, so screen readers are already listening. -->
-  <p id="status" class="status" class:error={status === 'error'} aria-live="polite">{message}</p>
+      <!-- On the page from the start, so screen readers are already listening. -->
+      <p id="status" class="status" class:error={status === 'error'} aria-live="polite">{message}</p>
+    </section>
 
-  <section aria-labelledby="party-heading">
-    <h2 id="party-heading" bind:this={partyHeading} tabindex="-1">
-      Your party ({party.length} of {MAX_PARTY_SIZE})
-    </h2>
+    <section class="panel party" aria-labelledby="party-heading">
+      <div class="party-top">
+        <h2 id="party-heading" bind:this={partyHeading} tabindex="-1">
+          Your party ({party.length} of {MAX_PARTY_SIZE})
+        </h2>
+        <!-- The same count as dots. The heading already says it, so screen readers skip these. -->
+        <span class="slots" aria-hidden="true">
+          {#each { length: MAX_PARTY_SIZE }, i (i)}
+            <span class="slot" class:filled={i < party.length}></span>
+          {/each}
+        </span>
+      </div>
 
-    <label for="filter">Show type</label>
-    <select id="filter" bind:value={filter}>
-      <option value="all">All types</option>
-      {#each TYPES as type (type)}
-        <option value={type}>{type}</option>
-      {/each}
-    </select>
+      <div class="filter">
+        <label for="filter">Show type</label>
+        <select id="filter" bind:value={filter}>
+          <option value="all">All types</option>
+          {#each TYPES as type (type)}
+            <option value={type}>{type}</option>
+          {/each}
+        </select>
+      </div>
 
-    <ul bind:this={list}>
-      {#each shown as pokemon (pokemon.id)}
-        <li>
-          <img src={pokemon.sprite} alt="" width="96" height="96" />
-          <span class="name">
-            {pokemon.name}
-            <span class="types">{pokemon.types.join(' / ')}</span>
-          </span>
-          <button type="button" onclick={() => remove(pokemon)}>Remove {pokemon.name}</button>
-        </li>
-      {:else}
-        <li>
-          {#if party.length === 0}
-            Your party is empty. Look someone up to add them.
-          {:else}
-            Nobody in your party is {filter} type.
-          {/if}
-        </li>
-      {/each}
-    </ul>
-  </section>
+      <ul bind:this={list}>
+        {#each shown as pokemon (pokemon.id)}
+          <li class="member">
+            <img src={pokemon.sprite} alt="" width="96" height="96" />
+            <span class="name">
+              {pokemon.name}
+              <span class="types">
+                {#each pokemon.types as type (type)}
+                  <span class="type">{type}</span>
+                {/each}
+              </span>
+            </span>
+            <button type="button" class="remove" onclick={() => remove(pokemon)}>Remove {pokemon.name}</button>
+          </li>
+        {:else}
+          <li class="empty">
+            {#if party.length === 0}
+              Your party is empty. Look someone up to add them.
+            {:else}
+              Nobody in your party is {filter} type.
+            {/if}
+          </li>
+        {/each}
+      </ul>
+    </section>
+  </div>
 
-  <p><a href="../../">Back to the hub</a></p>
+  <p class="back"><a href="../../">Back to the hub</a></p>
 </main>
 
 <style>
-  main {
+  /* A cool "storage box" palette: pale blue page, white panels, deep indigo. */
+  :global(:root) {
+    --bg: #eef2fb;
+    --surface: #ffffff;
+    --text: #1b2240;
+    --muted: #4a5375;
+    --accent: #3046b8;
+    --banner: #2b3a8c;
+    --banner-soft: #c9d3ff;
+    --chip: #e3e8f8;
+    --chip-text: #24306b;
+    --line: #6b759c;
+    --error: #a40000;
+  }
+
+  :global(body) {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
     font-family: system-ui, sans-serif;
     line-height: 1.5;
-    max-width: 40rem;
+  }
+
+  main {
+    max-width: 64rem;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 0 1rem 2rem;
   }
-  ul {
-    list-style: none;
-    padding: 0;
+
+  /* Outside main now, so it lines up with main's content by itself:
+     1rem from each edge, and never wider than main's 64rem of content. */
+  .banner {
+    margin: 1.5rem max(1rem, (100% - 64rem) / 2) 0;
+    padding: 1.5rem;
+    background: var(--banner);
+    color: #ffffff;
+    border-radius: 0.75rem;
   }
-  li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
+
+  .banner h1 {
+    margin: 0 0 0.25rem;
+    font-size: 2.25rem;
+    line-height: 1.2;
   }
-  .name {
-    flex-grow: 1;
-    font-weight: bold;
+
+  .banner p {
+    margin: 0;
+    color: var(--banner-soft);
   }
-  .types {
-    display: block;
-    font-weight: normal;
-    text-transform: capitalize;
+
+  /* Two panels side by side: a narrow one for adding, a wide one for the
+     party. Below 48rem (a phone, or 200% zoom) they stack, add first. */
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(16rem, 20rem) 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    margin-top: 1.5rem;
   }
+
+  @media (max-width: 48rem) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .panel {
+    padding: 1.25rem;
+    background: var(--surface);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgb(27 34 64 / 0.12);
+  }
+
+  h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  h2:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  button:focus-visible,
+  a:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ---------- Add panel ---------- */
+
+  form {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  label {
+    font-weight: 600;
+  }
+
+  input,
+  select {
+    min-height: 2.5rem;
+    padding: 0.375rem 0.625rem;
+    font: inherit;
+    color: var(--text);
+    background: var(--surface);
+    border: 2px solid var(--line);
+    border-radius: 0.5rem;
+  }
+
+  button {
+    min-height: 2.5rem;
+    padding: 0.375rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+
+  button[type='submit'] {
+    background: var(--accent);
+    color: #ffffff;
+    border: 2px solid var(--accent);
+  }
+
+  button[type='submit']:disabled {
+    background: var(--muted);
+    border-color: var(--muted);
+    cursor: progress;
+  }
+
   .status {
     min-height: 1.5em;
+    margin: 0.75rem 0 0;
+    color: var(--muted);
   }
+
   .error {
-    font-weight: bold;
-    color: #a40000;
+    color: var(--error);
+    font-weight: 700;
   }
-  form {
+
+  /* ---------- Party panel ---------- */
+
+  .party-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+  }
+
+  .slots {
+    display: flex;
+    gap: 0.375rem;
+  }
+
+  .slot {
+    width: 0.875rem;
+    height: 0.875rem;
+    border: 2px solid var(--line);
+    border-radius: 50%;
+  }
+
+  .slot.filled {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .filter {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .member {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+    background: var(--bg);
+    border-radius: 0.75rem;
+  }
+
+  img {
+    background: var(--surface);
+    border-radius: 0.5rem;
+  }
+
+  .name {
+    flex-grow: 1;
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+  }
+
+  .type {
+    padding: 0 0.5rem;
+    background: var(--chip);
+    color: var(--chip-text);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    border-radius: 1rem;
+  }
+
+  .remove {
+    background: var(--surface);
+    color: var(--accent);
+    border: 2px solid var(--accent);
+  }
+
+  .remove:hover {
+    background: var(--accent);
+    color: #ffffff;
+  }
+
+  .empty {
+    padding: 1rem;
+    color: var(--muted);
+    border: 2px dashed var(--line);
+    border-radius: 0.75rem;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  .back a {
+    display: inline-block;
+    padding-block: 0.25rem;
   }
 </style>
