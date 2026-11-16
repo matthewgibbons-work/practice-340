@@ -1,0 +1,89 @@
+/* The palette and type for the whole page. Components use these tokens,
+   so a color changes in one place. Every text/background pair is at least AA (4.5:1). */
+:root {
+  --paper: #f7f1e6;      /* warm page background */
+  --card: #fffdf8;       /* slot and panel background */
+  --ink: #12343b;        /* deep teal text: 11.9:1 on paper */
+  --ink-soft: #3f5f66;   /* secondary text: 6.4:1 on paper */
+  --accent: #b23a1e;     /* coral-red for buttons and errors: 5.6:1 on paper */
+  --accent-ink: #ffffff; /* text on the accent: 5.9:1 */
+  --line: #c9bba3;       /* borders, never the only signal */
+  --focus: #1f6feb;      /* focus ring, clearly visible on paper and card */
+
+  --serif: ui-serif, Georgia, 'Times New Roman', serif;
+  --sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --radius: 0.5rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1rem/1.5 var(--sans);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  line-height: 1.2;
+}
+
+/* Restyled focus that stays easy to see: a thick ring with a gap. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: var(--radius);
+  padding: 0.4rem 0.9rem;
+  border: 2px solid var(--ink);
+  background: var(--card);
+  color: var(--ink);
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+input[type='text'] {
+  font: inherit;
+  padding: 0.4rem 0.6rem;
+  border: 2px solid var(--ink-soft);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--ink);
+}
+
+/* An invalid field gets a thicker red border AND a written error (never color alone). */
+input[aria-invalid='true'] {
+  border-color: var(--accent);
+  border-width: 3px;
+}
+
+.error {
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0.25rem 0 0;
+}
+
+/* Hidden on screen, still read by screen readers. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
