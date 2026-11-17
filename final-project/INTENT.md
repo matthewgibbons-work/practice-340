@@ -56,3 +56,12 @@ My cousin Jess, a high-school senior who loves art class and is choosing a major
 - **The Blake page says the copy comparison happens on the Archive**, with a link to one poem's copies. The island answers a different question (what can you see in person), and I say so on the page.
 - **Kept:** the Wikipedia boxes. Claude's right that they say what each project *is*, but Jess asked that too; my analysis is where the "what you'd do" goes.
 - **Kept, but watching:** the Blake page is the biggest. If it's not done by Dec 2, the island moves to its own page.
+
+## Milestones
+
+- [x] 1. Intent brief, with Changes after review (Mon Nov 23)
+- [ ] 2. Astro skeleton live: layout and nav, home with definition draft and sources, one build-time data page, BASE_URL links (Mon Nov 30)
+- [ ] 3. Collections: examples with schema and pages, notes index and pages (Wed Dec 2)
+- [ ] 4. My island works live; analysis drafted for each example (Mon Dec 7)
+- [ ] 5. Vitest and Playwright + axe in Checks; reflections drafted (Wed Dec 9)
+- [ ] 6. AGENTS.md and skill tested; screen-reader pass; NOTES.md complete; /check passes (Mon Dec 14)
