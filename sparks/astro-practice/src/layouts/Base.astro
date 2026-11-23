@@ -1,0 +1,64 @@
+---
+// The one layout: every page passes its title and its own path, and its content goes in <slot />.
+import { url } from '../lib/url.js';
+
+const { title, current } = Astro.props;
+
+const links = [
+  { path: '', label: 'Home' },
+  { path: 'party/', label: 'My party' },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <title>{title} · Practice Trainer</title>
+    <style is:global>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, sans-serif;
+        line-height: 1.5;
+      }
+      body {
+        max-width: 44rem;
+        margin: 0 auto;
+        padding: 1rem;
+      }
+      nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 0;
+        list-style: none;
+      }
+      nav a[aria-current='page'] {
+        font-weight: bold;
+        text-decoration-thickness: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p><strong>Practice Trainer</strong></p>
+      <nav aria-label="Site">
+        <ul>
+          {
+            links.map((link) => (
+              <li>
+                <a href={url(link.path)} aria-current={link.path === current ? 'page' : undefined}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

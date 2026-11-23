@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url.js';
+---
+
+<Base title="Home" current="">
+  <h1>My Pokémon party</h1>
+  <p>
+    A small site about the four Pokémon I travel with, for my friend who borrows my laptop with
+    JavaScript blocked and still wants to see who's in the party.
+  </p>
+  <p>
+    It's built with Astro, so every page is plain HTML: the party is fetched from PokéAPI once, when
+    the site is built, not by your browser.
+  </p>
+  <p><a href={url('party/')}>Meet the party</a></p>
+</Base>
