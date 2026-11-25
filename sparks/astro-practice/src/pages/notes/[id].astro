@@ -1,0 +1,22 @@
+---
+// One page per note. getStaticPaths runs once at build time and lists every page to make.
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url.js';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((note) => ({ params: { id: note.id }, props: { note } }));
+}
+
+const { note } = Astro.props;
+// The note's own "# NOTES — …" line becomes the page's one <h1>, so we don't add another.
+const { Content } = await render(note);
+---
+
+<Base title={note.data.title}>
+  <article>
+    <Content />
+  </article>
+  <p><a href={url('notes/')}>Back to all notes</a></p>
+</Base>
